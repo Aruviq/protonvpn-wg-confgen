@@ -296,7 +296,7 @@ func (c *Client) SetMaxTier(tier *int, session *api.Session) {
 
 func (c *Client) ensureUsername() error {
 	if c.config.Username == "" {
-		fmt.Print("Username (without @protonmail.com): ")
+		fmt.Print("Username: ")
 		reader := bufio.NewReader(os.Stdin)
 		username, err := reader.ReadString('\n')
 		if err != nil {
@@ -320,9 +320,8 @@ func (c *Client) ensurePassword() error {
 		return nil
 	}
 	if c.config.Password == "" {
-		const stdinFileDescriptor = 0
 		fmt.Print("Password: ")
-		passwordBytes, err := term.ReadPassword(stdinFileDescriptor)
+		passwordBytes, err := term.ReadPassword(int(os.Stdin.Fd()))
 		fmt.Println()
 		if err != nil {
 			return fmt.Errorf("error reading password: %w", err)
